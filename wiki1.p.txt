@@ -1,0 +1,24 @@
+include('Puro6.p.txt').
+
+% Cell phone model (q19723444)
+% Type of manufactured goods (q22811462)
+% iPhone 15 pro (q122442399)
+
+% Wikidata types
+fof(axiom_1, axiom, colon(q122442399, btype_1)). % iPhone 15 pro
+fof(axiom_2, axiom, colon(q19723444, btype_2)). % Cell phone model
+fof(axiom_3, axiom, colon(q22811462, btype_2)). % Manufactured goods
+
+% Axiom 4: Instance of iPhone 15 Pro as a cell phone model
+fof(axiom_4, axiom, 
+    colon(instance_1, binstantiation) & 
+    hasParticipant(instance_1, inst, q122442399) & 
+    hasParticipant(instance_1, type, q19723444)
+).
+
+% Axiom 5: Cell phone model is a type of manufactured goods
+fof(axiom_5, axiom, 
+    colon(instance_3, binstantiation) & 
+    hasParticipant(instance_3, inst, q19723444) & 
+    hasParticipant(instance_3, type, q22811462)
+).
