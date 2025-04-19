@@ -1,0 +1,4 @@
+include('Puro6.p.txt').
+
+fof(axiom_new, axiom, ?[X]: colon(X, bobject) & ?[X]: colon(X, btype) & ?[X]: colon(X, btype_1) & ?[X]: colon(X, brelationship) &  ?[X]: colon(X,btype_2) &  ?[X]: colon(X,btype_3) &  ?[X]: colon(X, battribute) &  ?[X]: colon(X, bvaluation) &  ?[X]: colon(X, brelation)). 
+
