@@ -11,6 +11,13 @@ fof(puro_terms_satisfiability, axiom,
     ?[X]: colon(X, brelationship) &
     ?[X]: colon(X, battribute) &
     ?[X]: colon(X, bvaluation) &
-    ?[X]: colon(X, brelation)
+    ?[X]: colon(X, brelation) &
+    ?[X]: colon(X, btype_a) &
+    ?[X]: colon(X, btype_r) &
+    ?[X]: colon(X, binstantiation) &
+    ?[X]: colon(X, baxiom) &
+    ?[X]: colon(X, bfact) &
+    ?[X]: colon(X, bsubsumption) &
+    ?[X]: colon(X, bdisjointness)
 ).
 
