@@ -49,6 +49,15 @@ fof(exists_instance_universal, axiom,
 
 % Particulars
 
+fof(btype_brelation_battribute_terms, axiom,
+    puroterm(bobject)).
+
+fof(btype_brelation_battribute_terms, axiom,
+    puroterm(brelationship)).
+
+fof(btype_brelation_battribute_terms, axiom,
+    puroterm(bvaluation)).
+
 fof(particular_object_relationship_valuation, axiom,
     ![X]: (
         colon(X, particular) <=>
@@ -66,8 +75,10 @@ fof(disjoint_bobject_brelationship_bvaluation, axiom,
 
 fof(btype_brelation_battribute_terms, axiom,
     puroterm(btype)).
+
 fof(btype_brelation_battribute_terms, axiom,
     puroterm(brelation)).
+
 fof(btype_brelation_battribute_terms, axiom,
     puroterm(battribute)).
 
@@ -87,6 +98,15 @@ fof(disjoint_btype_brelation_battribute, axiom,
 
 
 % Hierarchy of Types
+
+fof(btype_brelation_battribute_terms, axiom,
+    puroterm(btype_1)).
+
+fof(btype_brelation_battribute_terms, axiom,
+    puroterm(btype_2)).
+
+fof(btype_brelation_battribute_terms, axiom,
+    puroterm(btype_3)).
 
 fof(btype_hierarchy_terms, axiom,
     ![X]: (
