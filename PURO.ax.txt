@@ -1,4 +1,5 @@
-% Basic Sorts and Disjointness
+% Basic Sorts
+
 fof(disjoint_sorts, axiom,
     ![X]: (
         ~(entity(X) & value(X)) &
@@ -9,7 +10,9 @@ fof(disjoint_sorts, axiom,
         ~(role(X) & puroterm(X))
     )).
 
-% Sort Declaration for Predicate ":"
+
+% Fundamental Relations
+
 fof(colon_sorts, axiom,
     ![X, T]: (
         colon(X, T) =>
@@ -23,11 +26,15 @@ fof(instanceof_sorts, axiom,
         (entity(X) & entity(Y))
     )).
 
+
+% Auxiliary PURO terms disjointness predicate
+
 fof(disjointTerms_definition, axiom,
    ![T_1, T_2]: ( disjointTerms(T_1, T_2) <=>
                   ![X]: ~(colon(X, T_1) & colon(X, T_2) )
    )
 ).
+
 
 % Particulars and Universals
 
@@ -40,7 +47,7 @@ fof(particular_universal_puro_term, axiom,
 fof(disjoint_particular_universal, axiom,
     disjointTerms(particular, universal)).
 
-fof(exists_instance_universal, axiom,
+fof(exists_instanceof_universal, axiom,
     ![Y]: (
         ? [X]: instanceof(X, Y) =>
         colon(Y, universal)
