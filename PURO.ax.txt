@@ -1,18 +1,18 @@
 % Basic Sorts and Disjointness
 fof(disjoint_sorts, axiom,
     ![X]: (
-        ~ (entity(X) & value(X)) &
-        ~ (puroterm(X) & entity(X)) &
-        ~ (puroterm(X) & value(X)) &
-        ~ (role(X) & entity(X)) &
-        ~ (role(X) & value(X)) &
-        ~ (role(X) & puroterm(X))
+        ~(entity(X) & value(X)) &
+        ~(puroterm(X) & entity(X)) &
+        ~(puroterm(X) & value(X)) &
+        ~(role(X) & entity(X)) &
+        ~(role(X) & value(X)) &
+        ~(role(X) & puroterm(X))
     )).
 
 % Sort Declaration for Predicate ":"
 fof(colon_sorts, axiom,
-    ![X, T]: ( 
-        colon(X, T) => 
+    ![X, T]: (
+        colon(X, T) =>
         (entity(X) & puroterm(T))
     )).
 
@@ -24,8 +24,8 @@ fof(instanceof_sorts, axiom,
     )).
 
 fof(disjointTerms_definition, axiom,
-   ![T_1,T_2]: ( disjointTerms(T_1, T_2) <=>
-               ![X]: ~ (colon(X, T_1) & colon(X, T_2) )
+   ![T_1, T_2]: ( disjointTerms(T_1, T_2) <=>
+                  ![X]: ~(colon(X, T_1) & colon(X, T_2) )
    )
 ).
 
@@ -159,10 +159,10 @@ fof(hasParticipant_sorts, axiom,
     )
 ).
 
-fof(brelationship_two_participants_or_roles, axiom,
-    ![R] : (
+fof(brelationship_at_least_two_participants_or_roles, axiom,
+    ![R]: (
         colon(R, brelationship)
-        => ?[X_1, X_2, R_1, R_2] : (
+        => ?[X_1, X_2, R_1, R_2]: (
             (X_1 != X_2 | R_1 != R_2)
             & hasParticipant(R, R_1, X_1)
             & hasParticipant(R, R_2, X_2)
@@ -194,35 +194,21 @@ fof(homogeneous_brelation, axiom,
 
 % Valuations
 
-fof(valuation_implies_hasvaluation, axiom,
-    ![V] : (
-        colon(V, bvaluation) =>
-        ?[X]: hasValuation(X, V)
-    )
-).
-
-fof(valuation_implies_hasvalue, axiom,
-    ![V] : (
-        colon(V, bvaluation) =>
-        ?[W]: hasValue(V, W)
-    )
-).
-
-fof(hasvaluation_implies_entity_and_valuation, axiom,
+fof(hasvaluation_only_entity_and_bvaluation, axiom,
     ![X, V]: (
         hasValuation(X, V) =>
         (entity(X) & colon(V, bvaluation))
     )
 ).
 
-fof(hasvalue_implies_value_and_valuation, axiom,
+fof(hasvalue_only_bvaluation_and_value, axiom,
     ![V, W]: (
         hasValue(V, W) =>
-        (value(W) & colon(V, bvaluation))
+        (colon(V, bvaluation) & value(W))
     )
 ).
 
-fof(hasvaluation_unique_entity, axiom,
+fof(bvaluation_hasvaluation_some_unique_entity, axiom,
     ![V]: (
         colon(V, bvaluation) =>
         ?[X_1]: (
@@ -232,7 +218,7 @@ fof(hasvaluation_unique_entity, axiom,
     )
 ).
 
-fof(hasvalue_unique_value, axiom,
+fof(bvaluation_hasvalue_some_unique_value, axiom,
     ![V]: (
         colon(V, bvaluation) =>
         ?[W_1]: (
@@ -274,7 +260,7 @@ fof(puroterm_btypea, axiom,
 ).
 
 fof(btyper_or_btypea_implies_btype, axiom,
-    ! [X] : (
+    ![X]: (
         (colon(X, btype_r) | colon(X, btype_a) =>
         colon(X, btype))
     )
@@ -291,36 +277,34 @@ fof(disjoint_btypes_a_r_1_2_3, axiom,
 ).
 
 fof(instanceof_btyper_only_brelation, axiom,
-    ! [X, Y] : (
+    ![X, Y]: (
         (instanceof(X, Y) & colon(Y, btype_r)) =>
         colon(X, brelation)
     )
 ).
 
 fof(brelation_instanceof_only_btyper_or_heterogen_btype, axiom,
-    ! [X, Y] : (
+    ![X, Y]: (
         (instanceof(X, Y) & colon(X, brelation)) =>
         (colon(Y, btype_r) | (colon(Y, btype) & heterogeneous(Y)))
     )
 ).
 
 fof(instanceof_btypea_only_battribute, axiom,
-    ! [X, Y] : (
+    ![X, Y]: (
         (instanceof(X, Y) & colon(Y, btype_a)) =>
         colon(X, battribute)
     )
 ).
 
 fof(battribute_instanceof_only_btypea_or_heterogen_btype, axiom,
-    ! [X, Y] : (
+    ![X, Y]: (
         (instanceof(X, Y) & colon(X, battribute)) =>
         (colon(Y, btype_a) | (colon(Y, btype) & heterogeneous(Y)))
     )
 ).
 
-
-
-fof(homogeneous_btype_a, axiom, 
+fof(homogeneous_btype_a, axiom,
     ![X]: (colon(X, btype_a) => ~heterogeneous(X))
 ).
 
@@ -363,17 +347,15 @@ fof(inst_type_distinct_roles, axiom,
     role(inst) & role(type) & inst != type
 ).
 
-% FIXME: missing axiom constrainting the roles to inst and type
-
-fof(binstantiation_necessary_cond, axiom,
+fof(binstantiation_implies_instanceof_no_other_participants, axiom,
     ![R]: (
         colon(R, binstantiation) =>
         ?[X, T]: (
             hasParticipant(R, inst, X) &
             hasParticipant(R, type, T) &
-            X!=T &
+            X != T &
             instanceof(X, T) &
-            ![Y, P] : (
+            ![Y, P]: (
                 hasParticipant(R, P, Y) =>
                 ((P = inst & Y = X) |
                  (P = type & Y = T))
@@ -382,14 +364,15 @@ fof(binstantiation_necessary_cond, axiom,
     )
 ).
 
-fof(formula_17a, axiom,
-    ![R, U, P] : (
-        (colon(R, baxiom) & hasParticipant(R, P, U) & role(P)) => colon(U, universal)
-    )
-).
-
 
 % Axioms - Disjointness and Subsumption
+
+fof(baxiom_participants_only_universals, axiom,
+    ![R, U, P]: (
+        (colon(R, baxiom) & hasParticipant(R, P, U) & role(P)) =>
+        colon(U, universal)
+    )
+).
 
 fof(bdisjointness_puroterm, axiom,
     puroterm(bdisjointness)).
@@ -397,12 +380,12 @@ fof(bdisjointness_puroterm, axiom,
 fof(bsubsumption_puroterm, axiom,
     puroterm(bsubsumption)).
 
-fof(disjunction, axiom,
+fof(disjoint_bdisjunction_bdisjointness, axiom,
     disjointTerms(bsubsumption, bdisjointness)
 ).
 
-fof(subsumption_disjointness_to_axiom, axiom,
-    ![R] : (
+fof(bsubsumption_bdisjointness_are_baxioms, axiom,
+    ![R]: (
        colon(R, bsubsumption) | colon(R, bdisjointness) => colon(R, baxiom)
     )
 ).
@@ -414,9 +397,7 @@ fof(role_subsumption_axiom, axiom,
     role(subuniv) & role(superuniv) & (subuniv != superuniv)
 ).
 
-% FIXME: missing axiom constrainting the roles to subuniv and superuniv
-
-fof(subsumption_axiom, axiom,
+fof(bsubsumption_implies_subsumption_no_other_participants, axiom,
     ![R]: (
         colon(R, bsubsumption) =>
         ?[U, V]: (
@@ -428,10 +409,8 @@ fof(subsumption_axiom, axiom,
             ) &
             ![W, P]: (
                 hasParticipant(R, P, W) =>
-                (
-                    (P = subuniv & W = U) |
-                    (P = superuniv & W = V)
-                )
+                ((P = subuniv & W = U) |
+                 (P = superuniv & W = V))
             )
         )
     )
@@ -440,13 +419,13 @@ fof(subsumption_axiom, axiom,
 
 % Disjunction
 
-fof(role_disjointness_axiom, axiom, 
+fof(role_disjointness_axiom, axiom,
     role(disjunct)
 ).
 
-% FIXME: missing axiom constrainting the roles to disjunct
+% FIXME: Incomplete: participants must be only disjuncts, at least 2
 
-fof(disjointness_participants_pairwise_disjoint, axiom,
+fof(bdisjointness_participants_pairwise_disjoint, axiom,
     ![R, P, U, V]: (
         colon(R, bdisjointness) &
         hasParticipant(R, P, U) &
