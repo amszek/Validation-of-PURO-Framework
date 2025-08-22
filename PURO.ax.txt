@@ -1,18 +1,21 @@
-% Basic Sorts and Disjointness
+% Basic Sorts
+
 fof(disjoint_sorts, axiom,
     ![X]: (
-        ~ (entity(X) & value(X)) &
-        ~ (puroterm(X) & entity(X)) &
-        ~ (puroterm(X) & value(X)) &
-        ~ (role(X) & entity(X)) &
-        ~ (role(X) & value(X)) &
-        ~ (role(X) & puroterm(X))
+        ~(entity(X) & value(X)) &
+        ~(puroterm(X) & entity(X)) &
+        ~(puroterm(X) & value(X)) &
+        ~(role(X) & entity(X)) &
+        ~(role(X) & value(X)) &
+        ~(role(X) & puroterm(X))
     )).
 
-% Sort Declaration for Predicate ":"
+
+% Fundamental Relations
+
 fof(colon_sorts, axiom,
-    ![X, T]: ( 
-        colon(X, T) => 
+    ![X, T]: (
+        colon(X, T) =>
         (entity(X) & puroterm(T))
     )).
 
@@ -23,13 +26,18 @@ fof(instanceof_sorts, axiom,
         (entity(X) & entity(Y))
     )).
 
+
+% Auxiliary PURO terms disjointness predicate
+
 fof(disjointTerms_definition, axiom,
-   ![T_1,T_2]: ( disjointTerms(T_1, T_2) <=>
-               ![X]: ~ (colon(X, T_1) & colon(X, T_2) )
+   ![T_1, T_2]: ( disjointTerms(T_1, T_2) <=>
+                  ![X]: ~(colon(X, T_1) & colon(X, T_2) )
    )
 ).
 
+
 % Particulars and Universals
+
 fof(particular_universal_puro_term, axiom,
     puroterm(particular)).
 
@@ -39,11 +47,23 @@ fof(particular_universal_puro_term, axiom,
 fof(disjoint_particular_universal, axiom,
     disjointTerms(particular, universal)).
 
-fof(exists_instance_universal, axiom,
+fof(exists_instanceof_universal, axiom,
     ![Y]: (
         ? [X]: instanceof(X, Y) =>
         colon(Y, universal)
     )).
+
+
+% Particulars
+
+fof(btype_brelation_battribute_terms, axiom,
+    puroterm(bobject)).
+
+fof(btype_brelation_battribute_terms, axiom,
+    puroterm(brelationship)).
+
+fof(btype_brelation_battribute_terms, axiom,
+    puroterm(bvaluation)).
 
 fof(particular_object_relationship_valuation, axiom,
     ![X]: (
@@ -57,14 +77,17 @@ fof(disjoint_bobject_brelationship_bvaluation, axiom,
     disjointTerms(brelationship, bvaluation)
 ).
 
-% Types and Relations: Universals
+
+% Universals - Types, Relations, Attributes
+
 fof(btype_brelation_battribute_terms, axiom,
     puroterm(btype)).
+
 fof(btype_brelation_battribute_terms, axiom,
     puroterm(brelation)).
+
 fof(btype_brelation_battribute_terms, axiom,
     puroterm(battribute)).
- 
 
 fof(universal_type_relation_attribute, axiom,
     ![X]: (
@@ -81,7 +104,17 @@ fof(disjoint_btype_brelation_battribute, axiom,
 ).
 
 
-% Hierarchy of BTypes
+% Hierarchy of Types
+
+fof(btype_brelation_battribute_terms, axiom,
+    puroterm(btype_1)).
+
+fof(btype_brelation_battribute_terms, axiom,
+    puroterm(btype_2)).
+
+fof(btype_brelation_battribute_terms, axiom,
+    puroterm(btype_3)).
+
 fof(btype_hierarchy_terms, axiom,
     ![X]: (
         (colon(X, btype_1) => colon(X, btype)) &
@@ -90,12 +123,10 @@ fof(btype_hierarchy_terms, axiom,
     )).
 
 fof(disjoint_btype_levels, axiom,
-    
-         disjointTerms(btype_1, btype_2) &
-         disjointTerms(btype_1, btype_3) &
+        disjointTerms(btype_1, btype_2) &
+        disjointTerms(btype_1, btype_3) &
         disjointTerms(btype_2, btype_3)
-    ).
-
+).
 
 fof(instance_btype_relationship, axiom,
     ![X, Y]: (
@@ -142,138 +173,111 @@ fof(homogeneous_btype_2, axiom,
 fof(homogeneous_btype_3, axiom,
     ![X]: (colon(X, btype_3) => ~heterogeneous(X))).
 
-%Axiom 10_a and 10_b
 
-fof(hasParticipant_implication, axiom, 
-    ! [R, P, X] : ( 
-        hasParticipant(R, P, X) 
-        => (colon(R, brelationship) 
-            & 
-            entity(X) 
-            & 
-            role(P) 
+% Relationships
+
+fof(hasParticipant_sorts, axiom,
+    ![R, P, X]: (
+        hasParticipant(R, P, X)
+        => (colon(R, brelationship)
+            & entity(X)
+            & role(P)
+        )
+    )
+).
+
+fof(brelationship_at_least_two_participants_or_roles, axiom,
+    ![R]: (
+        colon(R, brelationship)
+        => ?[X_1, X_2, R_1, R_2]: (
+            (X_1 != X_2 | R_1 != R_2)
+            & hasParticipant(R, R_1, X_1)
+            & hasParticipant(R, R_2, X_2)
+     )
+   )
+).
+
+
+% Relations
+
+fof(instanceof_brelation_only_brelationship, axiom,
+    ![X, Y]: (
+        (instanceof(X, Y) & colon(Y, brelation)) =>
+        colon(X, brelationship)
+    )
+).
+
+fof(brelationship_instanceof_only_brelation_or_heterogen_btype, axiom,
+    ![X, Y]: (
+        (instanceof(X, Y) & colon(X, brelationship)) =>
+        (colon(Y, brelation) | (colon(Y, btype) & heterogeneous(Y)))
+    )
+).
+
+fof(homogeneous_brelation, axiom,
+    ~?[X]: (heterogeneous(X) & colon(X, brelation))
+).
+
+
+% Valuations
+
+fof(hasvaluation_only_entity_and_bvaluation, axiom,
+    ![X, V]: (
+        hasValuation(X, V) =>
+        (entity(X) & colon(V, bvaluation))
+    )
+).
+
+fof(hasvalue_only_bvaluation_and_value, axiom,
+    ![V, W]: (
+        hasValue(V, W) =>
+        (colon(V, bvaluation) & value(W))
+    )
+).
+
+fof(bvaluation_hasvaluation_some_unique_entity, axiom,
+    ![V]: (
+        colon(V, bvaluation) =>
+        ?[X_1]: (
+            hasValuation(X_1, V) &
+            ![X_2]: (hasValuation(X_2, V) => (X_1 = X_2))
+        )
+    )
+).
+
+fof(bvaluation_hasvalue_some_unique_value, axiom,
+    ![V]: (
+        colon(V, bvaluation) =>
+        ?[W_1]: (
+            hasValue(V, W_1) &
+            ![W_2]: (hasValue(V, W_2) => (W_1 = W_2))
         )
     )
 ).
 
 
-fof(brelationship_implication, axiom,
-    ! [R] : (
-        colon(R, brelationship)
-        =>
-        ? [X_1, X_2, R_1, R_2] : (
-            (X_1 != X_2 | R_1 != R_2)
-            &
-            hasParticipant(R, R_1, X_1)
-            &
-            hasParticipant(R, R_2, X_2)
-     )
-   )
-).
+% Attributes
 
-% Axioms on brelation
-fof(instanceof_brelation_implies_brelationship, axiom,
-    ! [X, Y] : (
-        (instanceof(X, Y) & colon(Y, brelation))
-        =>
-       colon(X, brelationship)
-    )
-).
-
-fof(instanceof_brelationship_implies_brelation_or_btype, axiom,
-    ! [X, Y] : (
-        (instanceof(X, Y) & colon(X, brelationship))
-        =>
-        (colon(Y, brelation) | (colon(Y, btype) & heterogeneous(Y)))
-    )
-).
-
-fof(brelation_axiom, axiom, ~?[X]:(heterogeneous(X) & colon(X, brelation))).
-
-%Axioms on bvaluation
-fof(valuation_implies_hasvaluation, axiom,
-    ! [V] : (
-        colon(V, bvaluation)
-        =>
-        ? [X] : hasValuation(X, V)
-    )
-).
-
-
-fof(valuation_implies_hasvalue, axiom,
-    ! [V] : (
-        colon(V, bvaluation)
-        =>
-        ? [W] : hasValue(V, W)
-    )
-).
-fof(hasvaluation_implies_entity_and_valuation, axiom,
-    ! [X, V] : (
-        hasValuation(X, V)
-        =>
-        (entity(X) & colon(V, bvaluation))
-    )
-).
-
-
-fof(hasvalue_implies_value_and_valuation, axiom,
-    ! [V, W] : (
-        hasValue(V, W)
-        =>
-        (value(W) & colon(V, bvaluation))
-    )
-).
-
-fof(hasvaluation_unique_entity, axiom,
-    ! [ V] : (colon(V, bvaluation) =>
-        ?[X_1]:(hasValuation(X_1, V) & ![X_2]:(hasValuation(X_2, V)
-        =>
-        (X_1 = X_2)))
-    )
-).
-
-
-fof(hasvalue_unique_value, axiom,
-    ! [V] : (colon(V, bvaluation)  =>
-        ?[W_1]:(hasValue(V, W_1) & ![W_2]:(hasValue(V, W_2)
-        =>
-        (W_1 = W_2)))
-    )
-).
-
-
-%Axiom on battribute
-fof(instanceof_battribute_implies_bvaluation, axiom,
-    ! [X, Y] : (
-        (instanceof(X, Y) & colon(Y, battribute))
-        =>
+fof(instanceof_battribute_only_bvaluation, axiom,
+    ![X, Y]: (
+        (instanceof(X, Y) & colon(Y, battribute)) =>
         colon(X, bvaluation)
     )
 ).
 
-
-fof(instanceof_bvaluation_implies_battribute_or_btype, axiom,
-    ! [X, Y] : (
-        (instanceof(X, Y) & colon(X, bvaluation))
-        =>
+fof(bvaluation_instanceof_only_battribute_or_heterogen_btype, axiom,
+    ![X, Y]: (
+        (instanceof(X, Y) & colon(X, bvaluation)) =>
         (colon(Y, battribute) | (colon(Y, btype) & heterogeneous(Y)))
     )
 ).
 
-fof(hasvalue_unique_value, axiom,
-    ! [V] : (colon(V, bvaluation)  =>
-        ?[W_1]:(hasValue(V, W_1) & ![W_2]:(hasValue(V, W_2)
-        =>
-        (W_1 = W_2)))
-    )
+fof(homogeneous_battribute, axiom,
+    ~?[X]: (heterogeneous(X) & colon(X, battribute))
 ).
 
 
-
-fof(battribute_axiom, axiom, ~?[X]:(heterogeneous(X) & colon(X, battribute))).
-
-
-%Axiom on Btype relation and attribute
+% Types of Relations and Attributes
 
 fof(puroterm_btyper, axiom,
     puroterm(btype_r)
@@ -283,83 +287,60 @@ fof(puroterm_btypea, axiom,
 ).
 
 fof(btyper_or_btypea_implies_btype, axiom,
-    ! [X] : (
-        (colon(X, btype_r) | colon(X, btype_a)
-        =>
+    ![X]: (
+        (colon(X, btype_r) | colon(X, btype_a) =>
         colon(X, btype))
     )
 ).
 
-
-fof(disjoint_btypes, axiom,
+fof(disjoint_btypes_a_r_1_2_3, axiom,
     disjointTerms(btype_r, btype_a)
+    & disjointTerms(btype_a, btype_1)
+    & disjointTerms(btype_a, btype_2)
+    & disjointTerms(btype_a, btype_3)
+    & disjointTerms(btype_r, btype_1)
+    & disjointTerms(btype_r, btype_2)
+    & disjointTerms(btype_r, btype_3)
 ).
 
-fof(disjoint_btypes, axiom,
-    disjointTerms(btype_a, btype_1)
-).
-
-fof(disjoint_btypes, axiom,
-    disjointTerms(btype_a, btype_2)
-).
-
-fof(disjoint_btypes, axiom,
-    disjointTerms(btype_a, btype_3)
-).
-
-fof(disjoint_btypes, axiom,
-    disjointTerms(btype_r, btype_1)
-).
-
-fof(disjoint_btypes, axiom,
-    disjointTerms(btype_r, btype_2)
-).
-
-fof(disjoint_btypes, axiom,
-    disjointTerms(btype_r, btype_3)
-).
-
-
-fof(instanceof_btyper_implies_brelation, axiom,
-    ! [X, Y] : (
-        (instanceof(X, Y) & colon(Y, btype_r))
-        =>
+fof(instanceof_btyper_only_brelation, axiom,
+    ![X, Y]: (
+        (instanceof(X, Y) & colon(Y, btype_r)) =>
         colon(X, brelation)
     )
 ).
 
-
-fof(instanceof_brelation_implies_btyper_or_heterogeneous, axiom,
-    ! [X, Y] : (
-        (instanceof(X, Y) & colon(X, brelation))
-        =>
+fof(brelation_instanceof_only_btyper_or_heterogen_btype, axiom,
+    ![X, Y]: (
+        (instanceof(X, Y) & colon(X, brelation)) =>
         (colon(Y, btype_r) | (colon(Y, btype) & heterogeneous(Y)))
     )
 ).
-fof(instanceof_btypea_implies_battribute, axiom,
-    ! [X, Y] : (
-        (instanceof(X, Y) & colon(Y, btype_a))
-        =>
+
+fof(instanceof_btypea_only_battribute, axiom,
+    ![X, Y]: (
+        (instanceof(X, Y) & colon(Y, btype_a)) =>
         colon(X, battribute)
     )
 ).
 
-
-fof(instanceof_battribute_implies_btypea_or_heterogeneous, axiom,
-    ! [X, Y] : (
-        (instanceof(X, Y) & colon(X, battribute))
-        =>
+fof(battribute_instanceof_only_btypea_or_heterogen_btype, axiom,
+    ![X, Y]: (
+        (instanceof(X, Y) & colon(X, battribute)) =>
         (colon(Y, btype_a) | (colon(Y, btype) & heterogeneous(Y)))
     )
 ).
 
+fof(homogeneous_btype_a, axiom,
+    ![X]: (colon(X, btype_a) => ~heterogeneous(X))
+).
+
+fof(homogeneous_btype_r, axiom,
+    ![X]: (colon(X, btype_r) => ~heterogeneous(X))
+).
 
 
-fof(homogeneous_btype_a, axiom, ![X]: (colon(X, btype_a) => ~heterogeneous(X))).
-
-fof(homogeneous_btype_r, axiom, ![X]: (colon(X, btype_r) => ~heterogeneous(X))).
-
-%Axiom on brelationship
+% Kinds of Relationships: Instantiation, Axiom, Fact
 
 fof(puroterm_binstantiation, axiom,
     puroterm(binstantiation)
@@ -374,29 +355,33 @@ fof(puroterm_bfact, axiom,
 ).
 
 fof(brelationship_equiv_binstantiation_or_baxiom_or_bfact, axiom,
-    ! [R] : (
-        colon(R, brelationship)
-        <=>
+    ![R]: (
+        colon(R, brelationship) <=>
         (colon(R, binstantiation) | colon(R, baxiom) | colon(R, bfact))
     )
 ).
+
 fof(disjoint_binstantiation_baxiom_bfact, axiom,
     disjointTerms(binstantiation, baxiom) &
-        disjointTerms(binstantiation, bfact) &
-        disjointTerms(baxiom, bfact)
+    disjointTerms(binstantiation, bfact) &
+    disjointTerms(baxiom, bfact)
 ).
 
-fof(role_axiom, axiom, role(inst) & role(type) & inst != type).
 
-% Main axiom 16a
-fof(axiom_16a, axiom,
-    ![R] : (colon(R, binstantiation) =>
-        ?[X, T] : (
+% Instantiation
+
+fof(inst_type_distinct_roles, axiom,
+    role(inst) & role(type) & inst != type
+).
+
+fof(binstantiation_implies_instanceof_no_other_participants, axiom,
+    ![R]: (
+        colon(R, binstantiation) =>
+        ?[X, T]: (
             hasParticipant(R, inst, X) &
-	    hasParticipant(R, type, T) &
-	    X!=T &
+            hasParticipant(R, type, T) &
             instanceof(X, T) &
-            ![Y, P] : (
+            ![Y, P]: (
                 hasParticipant(R, P, Y) =>
                 ((P = inst & Y = X) |
                  (P = type & Y = T))
@@ -406,12 +391,14 @@ fof(axiom_16a, axiom,
 ).
 
 
-fof(formula_17a, axiom,
-    ![R, U, P] : (
-        (colon(R, baxiom) & hasParticipant(R, P, U) & role(P)) => colon(U, universal)
+% Axioms - Disjointness and Subsumption
+
+fof(baxiom_participants_only_universals, axiom,
+    ![R, U, P]: (
+        (colon(R, baxiom) & hasParticipant(R, P, U) & role(P)) =>
+        colon(U, universal)
     )
 ).
-
 
 fof(bdisjointness_puroterm, axiom,
     puroterm(bdisjointness)).
@@ -419,65 +406,65 @@ fof(bdisjointness_puroterm, axiom,
 fof(bsubsumption_puroterm, axiom,
     puroterm(bsubsumption)).
 
-fof(disjunction, axiom, 
-disjointTerms(bsubsumption, bdisjointness)).
+fof(disjoint_bdisjunction_bdisjointness, axiom,
+    disjointTerms(bsubsumption, bdisjointness)
+).
 
-fof(subsumption_disjointness_to_axiom, axiom,
-    ![R] : (
+fof(bsubsumption_bdisjointness_are_baxioms, axiom,
+    ![R]: (
        colon(R, bsubsumption) | colon(R, bdisjointness) => colon(R, baxiom)
-    )).
+    )
+).
 
-fof(role_subsumption_axiom, axiom, role(subuniv) & role(superuniv) & (subuniv != superuniv)).
 
-% Main Axiom 18
-fof(subsumption_axiom, axiom,
+% Subsumption
+
+fof(role_subsumption_axiom, axiom,
+    role(subuniv) & role(superuniv) & (subuniv != superuniv)
+).
+
+fof(bsubsumption_implies_subsumption_no_other_participants, axiom,
     ![R]: (
         colon(R, bsubsumption) =>
         ?[U, V]: (
             hasParticipant(R, subuniv, U) &
             hasParticipant(R, superuniv, V) &
-            U != V &
             ![X]: (
                 instanceof(X, U) => instanceof(X, V)
             ) &
             ![W, P]: (
                 hasParticipant(R, P, W) =>
-                (
-                    (P = subuniv & W = U) |
-                    (P = superuniv & W = V)
-                )
+                ((P = subuniv & W = U) |
+                 (P = superuniv & W = V))
             )
         )
     )
 ).
 
 
-% Role disjointness axiom
-fof(role_disjointness_axiom, axiom, 
+% Disjunction
+
+fof(role_disjointness_axiom, axiom,
     role(disjunct)
 ).
 
-% Main axiom 19: Disjointness participants exclusion
-fof(disjointness_participants_exclusion, axiom,
+fof(bdisjointness_participant_only_disjunct, axiom,
+    ![R, P, U]: (
+        colon(R, bdisjointness) &
+        hasParticipant(R, P, U) =>
+        P = disjunct
+    )
+).
+
+fof(bdisjointness_participants_pairwise_disjoint, axiom,
     ![R, P, U, V]: (
-        colon(R, bdisjointness) & 
-        hasParticipant(R, P, U) & 
-        hasParticipant(R, P, V) & 
-        U != V & P = disjunct =>
+        colon(R, bdisjointness) &
+        hasParticipant(R, P, U) &
+        hasParticipant(R, P, V) &
+        U != V =>
         ~?[X]: (
             instanceof(X, U) & instanceof(X, V)
         )
     )
 ).
-
-fof(axiom_new, axiom, ?[X]: colon(X, bobject) & ?[X]: colon(X, btype) & ?[X]: colon(X, btype_1) & ?[X]: colon(X, brelationship) &  ?[X]: colon(X,btype_2) &  ?[X]: colon(X,btype_3) &  ?[X]: colon(X, battribute) &  ?[X]: colon(X, bvaluation) &  ?[X]: colon(X, brelation)). 
-
-
-
-
-
-
-
-
-
 
