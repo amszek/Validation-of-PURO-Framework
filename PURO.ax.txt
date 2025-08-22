@@ -380,7 +380,6 @@ fof(binstantiation_implies_instanceof_no_other_participants, axiom,
         ?[X, T]: (
             hasParticipant(R, inst, X) &
             hasParticipant(R, type, T) &
-            X != T &
             instanceof(X, T) &
             ![Y, P]: (
                 hasParticipant(R, P, Y) =>
@@ -430,7 +429,6 @@ fof(bsubsumption_implies_subsumption_no_other_participants, axiom,
         ?[U, V]: (
             hasParticipant(R, subuniv, U) &
             hasParticipant(R, superuniv, V) &
-            U != V &
             ![X]: (
                 instanceof(X, U) => instanceof(X, V)
             ) &
@@ -450,14 +448,20 @@ fof(role_disjointness_axiom, axiom,
     role(disjunct)
 ).
 
-% FIXME: Incomplete: participants must be only disjuncts, at least 2
+fof(bdisjointness_participant_only_disjunct, axiom,
+    ![R, P, U]: (
+        colon(R, bdisjointness) &
+        hasParticipant(R, P, U) =>
+        P = disjunct
+    )
+).
 
 fof(bdisjointness_participants_pairwise_disjoint, axiom,
     ![R, P, U, V]: (
         colon(R, bdisjointness) &
         hasParticipant(R, P, U) &
         hasParticipant(R, P, V) &
-        U != V & P = disjunct =>
+        U != V =>
         ~?[X]: (
             instanceof(X, U) & instanceof(X, V)
         )
