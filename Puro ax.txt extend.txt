@@ -1,4 +1,23 @@
-include('Puro6.p.txt').
+include('PURO.ax.txt').
 
-fof(axiom_new, axiom, ?[X]: colon(X, bobject) & ?[X]: colon(X, btype) & ?[X]: colon(X, btype_1) & ?[X]: colon(X, brelationship) &  ?[X]: colon(X,btype_2) &  ?[X]: colon(X,btype_3) &  ?[X]: colon(X, battribute) &  ?[X]: colon(X, bvaluation) &  ?[X]: colon(X, brelation)). 
+fof(puro_terms_satisfiability, axiom,
+    ?[X]: colon(X, universal) &
+    ?[X]: colon(X, particular) &
+    ?[X]: colon(X, bobject) &
+    ?[X]: colon(X, btype) &
+    ?[X]: colon(X, btype_1) &
+    ?[X]: colon(X, btype_2) &
+    ?[X]: colon(X, btype_3) &
+    ?[X]: colon(X, brelationship) &
+    ?[X]: colon(X, battribute) &
+    ?[X]: colon(X, bvaluation) &
+    ?[X]: colon(X, brelation) &
+    ?[X]: colon(X, btype_a) &
+    ?[X]: colon(X, btype_r) &
+    ?[X]: colon(X, binstantiation) &
+    ?[X]: colon(X, baxiom) &
+    ?[X]: colon(X, bfact) &
+    ?[X]: colon(X, bsubsumption) &
+    ?[X]: colon(X, bdisjointness)
+).
 
