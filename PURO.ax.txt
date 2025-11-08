@@ -390,6 +390,21 @@ fof(binstantiation_implies_instanceof_no_other_participants, axiom,
     )
 ).
 
+% Type definition for Binstantiation 
+fof(type_definition_binstantiation, axiom,
+    ![X,B,T] :
+      ( b_type(X,B,T)
+        <=>
+        ( ?[R] :
+            ( binstantiation(R)
+              & hasParticipant(R,inst,X)
+              & hasParticipant(R,type,T)
+            )
+        )
+      )
+).
+
+
 
 % Axioms - Disjointness and Subsumption
 
@@ -467,4 +482,5 @@ fof(bdisjointness_participants_pairwise_disjoint, axiom,
         )
     )
 ).
+
 
