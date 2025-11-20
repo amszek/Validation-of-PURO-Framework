@@ -392,8 +392,8 @@ fof(binstantiation_implies_instanceof_no_other_participants, axiom,
 
 % Type definition for Binstantiation 
 fof(type_definition_binstantiation, axiom,
-    ![X,B,T] :
-      ( b_type(X,B,T)
+    ![X, T] :
+      ( binstanceof(X,T)
         <=>
         ( ?[R] :
             ( binstantiation(R)
@@ -482,5 +482,6 @@ fof(bdisjointness_participants_pairwise_disjoint, axiom,
         )
     )
 ).
+
 
 
