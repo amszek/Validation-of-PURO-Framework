@@ -435,7 +435,7 @@ fof(bsubsumption_bdisjointness_are_baxioms, axiom,
 % Subsumption
 
 fof(role_subsumption_axiom, axiom,
-    role(subuniv) & role(superuniv) & (subuniv != superuniv)
+    relrole(subuniv) & relrole(superuniv) & (subuniv != superuniv)
 ).
 
 fof(bsubsumption_implies_subsumption_no_other_participants, axiom,
@@ -460,7 +460,7 @@ fof(bsubsumption_implies_subsumption_no_other_participants, axiom,
 % Disjunction
 
 fof(role_disjointness_axiom, axiom,
-    role(disjunct)
+    relrole(disjunct)
 ).
 
 fof(bdisjointness_participant_only_disjunct, axiom,
@@ -482,6 +482,7 @@ fof(bdisjointness_participants_pairwise_disjoint, axiom,
         )
     )
 ).
+
 
 
 
