@@ -437,6 +437,15 @@ fof(bsubsumption_bdisjointness_are_baxioms, axiom,
 fof(role_subsumption_axiom, axiom,
     relrole(subuniv) & relrole(superuniv) & (subuniv != superuniv)
 ).
+% Subsumption Definition
+fof(bsubsumption_axiom, axiom,
+  ( bsubsume(U,V)
+    <=>
+    ( ? [R] :
+        ( bsubsumption(R)
+        & hasParticipant(R, subuniv, U)
+        & hasParticipant(R, superuniv, V) ) ) )
+).
 
 fof(bsubsumption_implies_subsumption_no_other_participants, axiom,
     ![R]: (
@@ -482,6 +491,7 @@ fof(bdisjointness_participants_pairwise_disjoint, axiom,
         )
     )
 ).
+
 
 
 
