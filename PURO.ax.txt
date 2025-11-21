@@ -370,18 +370,17 @@ fof(disjoint_binstantiation_baxiom_bfact, axiom,
 
 % Instantiation
 
-fof(inst_type_distinct_roles, axiom,
-    role(inst) & role(type) & inst != type
-).
+fof(role_axiom, axiom, relrole(inst) & relrole(type) & inst != type).
 
-fof(binstantiation_implies_instanceof_no_other_participants, axiom,
-    ![R]: (
-        colon(R, binstantiation) =>
-        ?[X, T]: (
+% Main axiom 
+fof(Main_axiom, axiom,
+    ![R] : (colon(R, binstantiation) =>
+        ?[X, T] : (
             hasParticipant(R, inst, X) &
-            hasParticipant(R, type, T) &
+	    hasParticipant(R, type, T) &
+	    X!=T &
             instanceof(X, T) &
-            ![Y, P]: (
+            ![Y, P] : (
                 hasParticipant(R, P, Y) =>
                 ((P = inst & Y = X) |
                  (P = type & Y = T))
@@ -389,6 +388,7 @@ fof(binstantiation_implies_instanceof_no_other_participants, axiom,
         )
     )
 ).
+
 
 % Type definition for Binstantiation 
 fof(type_definition_binstantiation, axiom,
@@ -482,6 +482,7 @@ fof(bdisjointness_participants_pairwise_disjoint, axiom,
         )
     )
 ).
+
 
 
 
