@@ -1,145 +1,75 @@
-include('Puro6.p.txt').
+include('puro.ax.txt').
+fof(puro_model, axiom,
+(
+    % === Entities and Their PURO Categories ===
+    colon(bookstore_prague, bobject) &
+    colon(_someObjects1, bobject) &
+    colon(the_little_prince, btype_1) &
+    colon(book, btype_2) &
+    colon(price, btype_a) & 
+    colon(book_relationship, btype_r) &
+    colon(saint_exupery, bobject) &
+    colon(person, btype_1) & 
+    
 
-% Entity declarations (types of entities)
-fof(person_axiom, axiom, 
-    colon(person, btype_1)
-).
+    % === B-Instantiations Using the Abbreviation x :B T ===
+    binstanceof(_someObjects1, the_little_prince) &
+    binstanceof(_someObjects1, someObjects) &
+    binstanceof(the_little_prince, book) &
+    binstanceof(bookstore_prague, bookstore) &
+    binstanceof(saint_exupery, person) &
+    binstanceof(author, book_relationship) &
+    binstanceof(unit_price, price) &
 
-fof(book_axiom, axiom, 
-    colon(book, btype_2)
-).
-
-fof(organization_axiom, axiom, 
-    colon(organization, btype_1)
-).
-
-fof(bookstore_axiom, axiom, 
-    colon(bookstore, btype_1)
-).
-
-fof(book_instance_axiom, axiom, 
-    colon(the_little_prince, btype_1)
-).
-
-fof(price_axiom, axiom, 
-    colon(price, btype_a)
-).
-
-
-fof(book_relationship_axiom, axiom, 
-    colon(book_relationship, btype_r)
-).
-
-fof(author_axiom, axiom, 
-    colon(author, brelation)
-).
-
-fof(offers_axiom, axiom, 
-    colon(offers, brelation)
-).
-
-fof(unit_price_axiom, axiom, 
-    colon(unit_price, battribute)
-).
+  
+    %=== B-Subsumption ====
+   colon(organization, btype_1) & 
+   colon(bookstore, btype_1) &
+   bsubsume(bookstore, organization) &
 
 
-fof(quantity_axiom, axiom, 
-    colon(quantity, battribute)
-).
+    % === The Offers Relation ===
+    colon(offers, brelation) &
+    relrole(_offersRole1) &
+    relrole(what) &
+    _offersRole1 != what &
 
-fof(pages_axiom, axiom, 
-    colon(pages, battribute)
-).
+    % === An Instance of the Offers B-Relationship ===
+    colon(_offers1, brelationship) &
+    binstanceof(_offers1, offers) &
+    hasParticipant(_offers1, _offersRole1, bookstore_prague) &
+    hasParticipant(_offers1, what, _someObjects1) &
 
-% Object declarations
-fof(saint_exupery_axiom, axiom, 
-    colon(saint_exupery, bobject)
-).
+    %==== The Author Relation===
+    colon(author, brelation) &
+    relrole(author_role) &
+    relrole(authored_work_role) &
+    author_role != authored_work_role &
 
-fof(bookstore_prague_axiom, axiom, 
-    colon(bookstore_prague, bobject)
-).
-
-fof(some_object_axiom, axiom, 
-    colon(some_object, bobject)
-).
-
-% Subtype relations: Bookstore as a subclass of Organization
-fof(subclass_bookstore_organization, axiom,
-    colon(subclassof_2, bsubsumption) & 
-    hasParticipant(subclassof_2, subuniv, bookstore) & 
-    hasParticipant(subclassof_2, superuniv, organization) & 
-    ![X]: (
-        instanceof(X, bookstore) => instanceof(X, organization)
-    )
-).
-
-
-% Instances of entities: Saint Exupery as an instance of Person
-fof(instance_saint_exupery, axiom, instanceof(saint_exupery, person)
-).
-
-fof(instance_little_prince, axiom, instanceof(the_little_prince, book)
-).
-
-fof(instance_bookstore_prague, axiom, instanceof(bookstore_prague, bookstore)
-).
-
-fof(instance_author, axiom, instanceof(author, book_relationship)
-).
-
-fof(instance_unit_price, axiom, instanceof(unit_price, price)
-).
-
-
-% Attribute declarations (Battributes and Bvaluations)
-fof(quantity_instance_axiom, axiom, 
-    instanceof(some_object_quantity, quantity) & 
-    colon(quantity, battribute) & 
-    colon(some_object_quantity, bvaluation)
-).
-
-% Unit price instance for The Little Prince
-fof(unit_price_instance_axiom, axiom, 
-    instanceof(offers_1_unit_price, unit_price) & 
-    colon(unit_price, battribute) & 
-    colon(offers_1_unit_price, bvaluation)
-).
-
-fof(pages_instance_axiom, axiom, 
-    instanceof(the_little_prince_pages, pages) & 
-    colon(pages, battribute) & 
-    colon(the_little_prince_pages, bvaluation)
-).
-
-% Attribute-value assignments
-fof(pages_value_axiom, axiom, 
-    hasValue(the_little_prince_pages, 100)
-).
-
-fof(unit_price_value_axiom, axiom, 
-    hasValue(offers_1_unit_price, 300)
-).
-
-fof(quantity_value_axiom, axiom, 
-    hasValue(some_object_quantity, 10)
-).
-
-
-% Relationships (Brelations)
-fof(authorship_relationship_axiom, axiom, 
-    colon(authorship_1, brelationship) & 
+    % === An Instance of the Author B-Relationship ===
+    colon(authorship_1, brelationship) &
+    binstanceof(authorship_1, author) &
     hasParticipant(authorship_1, author_role, saint_exupery) & 
     hasParticipant(authorship_1, authored_work_role, the_little_prince) & 
-    (author_role != authored_work_role)
-).
+    
 
-
-fof(offers_relationship_axiom, axiom, 
-    colon(offers_1, brelationship) & 
-    hasParticipant(offers_1, given, some_object) & 
-    hasParticipant(offers_1, giver, bookstore_prague) & 
-    (given != giver)
-).
-
+    % === B-Attributes and Valuations ===
+    colon(quantity, battribute) &
+    colon(unit_price, battribute) &
+    colon(pages, battribute) &
+    colon(_quantity1, bvaluation) &
+    colon(_unit_price1, bvaluation) &
+    colon(_pages1, bvaluation) &
+    binstanceof(_quantity1, quantity) &
+    binstanceof(unit_price, price) &
+    binstanceof(_unit_price1, unit_price) &
+    binstanceof(_pages1, pages) &
+    binstanceof(the_little_prince1, the_little_prince) &
+    hasValuation(_someObjects1, _quantity1) &
+    hasValue(_quantity1, 10) &
+    hasValuation(_offers1, _unit_price1) &
+    hasValue(_unit_price1, 300) &
+    hasValuation(the_little_prince_1, _pages1) &
+    hasValue(_pages1, 100)
+)).
 
