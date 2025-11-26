@@ -1,15 +1,14 @@
-include('PURO.ax.txt').
 fof(puro_model, axiom,
 (
     % === Entities and Their PURO Categories ===
-    colon(bookstore_prague, bobject) &
-    colon(_someObjects1, bobject) &
-    colon(the_little_prince, btype_1) &
-    colon(book, btype_2) &
-    colon(price, btype_a) & 
-    colon(book_relationship, btype_r) &
-    colon(saint_exupery, bobject) &
-    colon(person, btype_1) & 
+    associatedwith(bookstore_prague, bobject) &
+    associatedwith(_someObjects1, bobject) &
+    associatedwith(the_little_prince, btype_1) &
+    associatedwith(book, btype_2) &
+    associatedwith(price, btype_a) & 
+    associatedwith(book_relationship, btype_r) &
+    associatedwith(saint_exupery, bobject) &
+    associatedwith(person, btype_1) & 
     
 
     % === B-Instantiations Using the Abbreviation x :B T ===
@@ -23,43 +22,43 @@ fof(puro_model, axiom,
 
   
     %=== B-Subsumption ====
-   colon(organization, btype_1) & 
-   colon(bookstore, btype_1) &
+   associatedwith(organization, btype_1) & 
+   associatedwith(bookstore, btype_1) &
    bsubsume(bookstore, organization) &
 
 
     % === The Offers Relation ===
-    colon(offers, brelation) &
+    associatedwith(offers, brelation) &
     relrole(_offersRole1) &
     relrole(what) &
     _offersRole1 != what &
 
     % === An Instance of the Offers B-Relationship ===
-    colon(_offers1, brelationship) &
+    associatedwith(_offers1, brelationship) &
     binstanceof(_offers1, offers) &
     hasParticipant(_offers1, _offersRole1, bookstore_prague) &
     hasParticipant(_offers1, what, _someObjects1) &
 
     %==== The Author Relation===
-    colon(author, brelation) &
+    associatedwith(author, brelation) &
     relrole(author_role) &
     relrole(authored_work_role) &
     author_role != authored_work_role &
 
     % === An Instance of the Author B-Relationship ===
-    colon(authorship_1, brelationship) &
+    associatedwith(authorship_1, brelationship) &
     binstanceof(authorship_1, author) &
     hasParticipant(authorship_1, author_role, saint_exupery) & 
     hasParticipant(authorship_1, authored_work_role, the_little_prince) & 
     
 
     % === B-Attributes and Valuations ===
-    colon(quantity, battribute) &
-    colon(unit_price, battribute) &
-    colon(pages, battribute) &
-    colon(_quantity1, bvaluation) &
-    colon(_unit_price1, bvaluation) &
-    colon(_pages1, bvaluation) &
+    associatedwith(quantity, battribute) &
+    associatedwith(unit_price, battribute) &
+    associatedwith(pages, battribute) &
+    associatedwith(_quantity1, bvaluation) &
+    associatedwith(_unit_price1, bvaluation) &
+    associatedwith(_pages1, bvaluation) &
     binstanceof(_quantity1, quantity) &
     binstanceof(unit_price, price) &
     binstanceof(_unit_price1, unit_price) &
@@ -72,5 +71,4 @@ fof(puro_model, axiom,
     hasValuation(the_little_prince_1, _pages1) &
     hasValue(_pages1, 100)
 )).
-
 
