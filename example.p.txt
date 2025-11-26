@@ -1,4 +1,4 @@
-include('puro.ax.txt').
+include('PURO.ax.txt').
 fof(puro_model, axiom,
 (
     % === Entities and Their PURO Categories ===
@@ -72,4 +72,5 @@ fof(puro_model, axiom,
     hasValuation(the_little_prince_1, _pages1) &
     hasValue(_pages1, 100)
 )).
+
 
