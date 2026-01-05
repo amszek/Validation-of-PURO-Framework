@@ -1,21 +1,22 @@
 include('Puro6.p.txt').
 
 % Wikidata types related to diseases
-fof(axiom_1, axiom, colon(q1641483, btype_1)). % Hypotrichosis
-fof(axiom_2, axiom, colon(q2989168, btype_1)). % Hair disease
-fof(axiom_3, axiom, colon(q929833, btype_1)).  % Rare disease
+fof(axiom_1, axiom, associatedWith(q1641483, btype_1)). % Hypotrichosis
+fof(axiom_2, axiom, associatedWith(q2989168, btype_1)). % Hair disease
+fof(axiom_3, axiom, associatedWith(q929833, btype_1)).  % Rare disease
 
 % Axiom 4: Subclass relation - 
 fof(axiom_4, axiom,  
-    colon(subclassof_1, bsubsumption) & 
+    associatedWith(subclassof_1, bsubsumption) & 
     hasParticipant(subclassof_1, subuniv, q1641483) & 
     hasParticipant(subclassof_1, superuniv, q2989168)
 ).
 
 % Axiom 6: 
 fof(axiom_6, axiom, 
-    colon(instance_1, binstantiation) & 
+    associatedWith(instance_1, binstantiation) & 
     hasParticipant(instance_1, inst, q1641483) & 
     hasParticipant(instance_1, type, q2989168)
 ).
+
 
